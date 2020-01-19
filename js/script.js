@@ -1,10 +1,11 @@
 /*
 Here is my javascript file for my 3rd project, I will be aiming for exceeds expectations
     To do: 
-        1: set focus to name input field;
-        2: Create another text input field (directly into the HTML)
-            set id to 'other-title'
-            placeholder text of 'Your Job Role'
+        // 1: set focus to name input field: Done!
+        // 2: Create another text input field (directly into the HTML)Done!
+        //     set id to 'other-title'
+        //     placeholder text of 'Your Job Role'
+        //     Hide with JS unless 'other' is selected
         3: T-shirt
             theme must be selected for color options to appear
                 color field reads 'Please select a T-shirt theme'
@@ -60,11 +61,24 @@ Here is my javascript file for my 3rd project, I will be aiming for exceeds expe
         2: Conditional error message
         3: Real time error messages
 */
-//Here I will list any variables I need
+//Here I will define any variables I need
 const name = document.getElementById('name');
-
+const jobRole = document.getElementById('title');
+const otherTitle = document.getElementById('other-title');
 //Here I use .focus() on the name input field, making it active from the beginning
 name.focus();
+//Here I hide the other job title input field
+otherTitle.hidden = true;
 //Here I will create functions that will be used later in the project
 
 //Here I will create event listners
+    //Here I add an event listener for selecting the other option and showing and hiding the otherTitle field
+    jobRole.addEventListener("click", () => {
+        if (jobRole.value !== "other") {
+            //Here I hide the other job title input field
+            otherTitle.hidden = true;
+        } else if (jobRole.value === "other") {
+            //here the other job input field is revealed if the 'other' option is selected
+            otherTitle.hidden = false;
+        };
+        });
