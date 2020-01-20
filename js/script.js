@@ -75,13 +75,10 @@ const tShirtColorSelect = document.getElementById('color');
 name.focus();
 //Here I hide the other job title input field
 otherTitle.hidden = true;
-//Here I hide the color selector when no design is chosen
+//Here I hide the 'Color' div when no t-shirt design is selected
 if (tShirtDesign.value !== "js puns" || tShirtDesign.value !== "heart js") {
     tShirtColor.hidden = true;
 };
-
-//Here I hide the 'Color' div when no t-shirt design is selected
-
 //Here I will create functions that will be used later in the project
 
 //Here I will create event listners
