@@ -65,10 +65,23 @@ Here is my javascript file for my 3rd project, I will be aiming for exceeds expe
 const name = document.getElementById('name');
 const jobRole = document.getElementById('title');
 const otherTitle = document.getElementById('other-title');
+//the constant for the t-shirt design selector
+const tShirtDesign = document.getElementById('design');
+//the constant for the t-shirt color div
+const tShirtColor = document.getElementById('colors-js-puns');
+//constant for the t-shirt color selector
+const tShirtColorSelect = document.getElementById('color');
 //Here I use .focus() on the name input field, making it active from the beginning
 name.focus();
 //Here I hide the other job title input field
 otherTitle.hidden = true;
+//Here I hide the color selector when no design is chosen
+if (tShirtDesign.value !== "js puns" || tShirtDesign.value !== "heart js") {
+    tShirtColor.hidden = true;
+};
+
+//Here I hide the 'Color' div when no t-shirt design is selected
+
 //Here I will create functions that will be used later in the project
 
 //Here I will create event listners
@@ -82,3 +95,38 @@ otherTitle.hidden = true;
             otherTitle.hidden = false;
         };
         });
+//Here I create an event listener for the t-shirt selection
+tShirtDesign.addEventListener('click', () => {
+    //if no design is selected, hide the color options
+    if (tShirtDesign.value !== "js puns" && tShirtDesign.value !== "heart js") {
+        tShirtColor.hidden = true;
+    } else if (tShirtDesign.value === "js puns") {
+        //when the js puns design is selected the colors are shown
+        tShirtColor.hidden = false;
+        //the color selector selects the first relevant color
+        tShirtColorSelect.selectedIndex = 0;
+        for (let i = 0; i < tShirtColorSelect.options.length; i++) {
+            if (i >= 3) {
+                //irrelevent colors are hidden
+                tShirtColorSelect.options[i].hidden = true;
+            } else if (i <= 2) {
+                //relevent colors are shown
+                tShirtColorSelect.options[i].hidden = false;
+            }
+        }
+    } else if (tShirtDesign.value === "heart js") {
+        //when the I <3 js design is chosen the colors are shown
+        tShirtColor.hidden = false;
+        //the first relevent color is selected
+        tShirtColorSelect.selectedIndex = 3;
+        for (let i = 0; i < tShirtColorSelect.options.length; i++) {
+            if (i <= 2) {
+                //irrelevent colors are hidden
+                tShirtColorSelect.options[i].hidden = true;
+            } else if (i >= 3) {
+                //relevent colors are shown
+                tShirtColorSelect.options[i].hidden = false;
+            }
+        }
+    }
+});
