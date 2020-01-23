@@ -6,14 +6,14 @@ Here is my javascript file for my 3rd project, I will be aiming for exceeds expe
         //     set id to 'other-title'
         //     placeholder text of 'Your Job Role'
         //     Hide with JS unless 'other' is selected
-        3: T-shirt
-            theme must be selected for color options to appear
-                color field reads 'Please select a T-shirt theme'
-            Color menu should only display colors that match selected theme
-                Js Puns: 'Cornflower Blue, Dark Slate Grey, Gold'
-                I <3 JS: 'Tomato, Steel Blue, Dim Grey'
-            When a new theme is selected, color field and menu are updated
-                Check project warm up for practice with select and options elements
+        // 3: T-shirt
+        //     theme must be selected for color options to appear
+        //         color field reads 'Please select a T-shirt theme'
+        //     Color menu should only display colors that match selected theme
+        //         Js Puns: 'Cornflower Blue, Dark Slate Grey, Gold'
+        //         I <3 JS: 'Tomato, Steel Blue, Dim Grey'
+        //     When a new theme is selected, color field and menu are updated
+        //         Check project warm up for practice with select and options elements
         4: Register for Activities
             Disallow signing up for conflicting activities
                 disable checkbox and indicate that the activity is in conflict with a selected event
@@ -57,7 +57,7 @@ Here is my javascript file for my 3rd project, I will be aiming for exceeds expe
             text shadows
         9: Test cross browser
     *Extra*
-        1: Hide the 'Color' label and select menu until design is selected
+        // 1: Hide the 'Color' label and select menu until design is selected
         2: Conditional error message
         3: Real time error messages
 */
@@ -71,19 +71,34 @@ const tShirtDesign = document.getElementById('design');
 const tShirtColor = document.getElementById('colors-js-puns');
 //constant for the t-shirt color selector
 const tShirtColorSelect = document.getElementById('color');
+//constant for the activities field
+const act = document.querySelector('.activities');
+//constant for the input fields in the activities field
+const actInputs = act.querySelectorAll('input');
+//Here I create a div-tag for the running total of activities cost
+const cost = document.createElement('div');
+//Here I make a variable to hold the total cost of activities
+let totalCost = 0;
+
+
 //Here I use .focus() on the name input field, making it active from the beginning
 name.focus();
 //Here I hide the other job title input field
 otherTitle.hidden = true;
+//Here I hide the t-shirt 'select' option
+tShirtDesign.firstElementChild.hidden = true;
 //Here I hide the 'Color' div when no t-shirt design is selected
 if (tShirtDesign.value !== "js puns" || tShirtDesign.value !== "heart js") {
     tShirtColor.hidden = true;
 };
+//Here I append the div-tag for the running total to the activities field
+act.appendChild(cost);
+
 //Here I will create functions that will be used later in the project
 
 //Here I will create event listners
     //Here I add an event listener for selecting the other option and showing and hiding the otherTitle field
-    jobRole.addEventListener("click", () => {
+    jobRole.addEventListener("change", () => {
         if (jobRole.value !== "other") {
             //Here I hide the other job title input field
             otherTitle.hidden = true;
@@ -93,7 +108,7 @@ if (tShirtDesign.value !== "js puns" || tShirtDesign.value !== "heart js") {
         };
         });
 //Here I create an event listener for the t-shirt selection
-tShirtDesign.addEventListener('click', () => {
+tShirtDesign.addEventListener('change', () => {
     //if no design is selected, hide the color options
     if (tShirtDesign.value !== "js puns" && tShirtDesign.value !== "heart js") {
         tShirtColor.hidden = true;
@@ -126,4 +141,37 @@ tShirtDesign.addEventListener('click', () => {
             }
         }
     }
+});
+
+//Event listener for activities
+//Attached to the field set with class 'activities'
+act.addEventListener('change', (e) => {
+    //The constant for the event target
+    const click = e.target;
+    //Here I get the data for the day and time of the clicked input
+    const clickTime = click.getAttribute('data-day-and-time');
+    //The cost of the clicked input
+    const clickCost = Number(click.getAttribute('data-cost'));
+    //Adding and subtracting the cost of checked and unchecked boxes
+    if (click.checked) {
+        totalCost += clickCost;
+    } else {
+        totalCost -= clickCost;
+    }
+    cost.innerHTML = `<p>Total cost: $${totalCost}</p>`
+    
+//Iterate through inputs
+for (let i = 0; i < actInputs.length; i++) {
+    //create a variable for the time of the iterated checkboxes
+    const checkTime = actInputs[i].getAttribute('data-day-and-time');
+    if (clickTime === checkTime && click !== actInputs[i]) {
+        if(click.checked) {
+            //disabling conflicting times
+            actInputs[i].disabled = true;
+        } else {
+            //enabling no longer conflicting times
+            actInputs[i].disabled = false;
+        }
+    }
+}
 });
