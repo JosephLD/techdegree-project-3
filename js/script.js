@@ -14,12 +14,12 @@ Here is my javascript file for my 3rd project, I will be aiming for exceeds expe
         //         I <3 JS: 'Tomato, Steel Blue, Dim Grey'
         //     When a new theme is selected, color field and menu are updated
         //         Check project warm up for practice with select and options elements
-        4: Register for Activities
-            Disallow signing up for conflicting activities
-                disable checkbox and indicate that the activity is in conflict with a selected event
-                use 'checked' attr
-            Display running total of costs below all checkboxes
-            Maybe 'check' out project warm up for checkboxes
+        // 4: Register for Activities
+        //     Disallow signing up for conflicting activities
+        //         disable checkbox and indicate that the activity is in conflict with a selected event
+        //         use 'checked' attr
+        //     Display running total of costs below all checkboxes
+        //     Maybe 'check' out project warm up for checkboxes
 
         5: Payment info
             Display payment section based on option chosen
@@ -174,4 +174,33 @@ for (let i = 0; i < actInputs.length; i++) {
         }
     }
 }
+});
+
+
+//Working on payment area here
+//Storing the payment in a constant for future use
+const pay = document.querySelector('#payment');
+const cc = document.getElementById('credit-card');
+const pp = document.getElementById('paypal');
+const bc = document.getElementById('bitcoin');
+//Hiding the select payment option
+pay.firstElementChild.hidden = true;
+//Hiding the paypal and bit coin options
+pp.hidden = true;
+bc.hidden = true;
+pay.addEventListener('change', (e) => {
+    const clickPay = e.target;
+    if (clickPay.value === 'credit card') {
+        cc.hidden = false;
+        pp.hidden = true;
+        bc.hidden = true;
+    } else if (clickPay.value === 'paypal') {
+        cc.hidden = true;
+        pp.hidden = false;
+        bc.hidden = true;
+    } else if (clickPay.value === 'bitcoin') {
+        cc.hidden = true;
+        pp.hidden = true;
+        bc.hidden = false;
+    }
 });
