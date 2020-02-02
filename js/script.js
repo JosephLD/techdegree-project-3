@@ -1,32 +1,6 @@
 /*
 Here is my javascript file for my 3rd project, I will be aiming for exceeds expectations
     To do: 
-        // 1: set focus to name input field: Done!
-        // 2: Create another text input field (directly into the HTML)Done!
-        //     set id to 'other-title'
-        //     placeholder text of 'Your Job Role'
-        //     Hide with JS unless 'other' is selected
-        // 3: T-shirt
-        //     theme must be selected for color options to appear
-        //         color field reads 'Please select a T-shirt theme'
-        //     Color menu should only display colors that match selected theme
-        //         Js Puns: 'Cornflower Blue, Dark Slate Grey, Gold'
-        //         I <3 JS: 'Tomato, Steel Blue, Dim Grey'
-        //     When a new theme is selected, color field and menu are updated
-        //         Check project warm up for practice with select and options elements
-        // 4: Register for Activities
-        //     Disallow signing up for conflicting activities
-        //         disable checkbox and indicate that the activity is in conflict with a selected event
-        //         use 'checked' attr
-        //     Display running total of costs below all checkboxes
-        //     Maybe 'check' out project warm up for checkboxes
-
-        5: Payment info
-            Display payment section based on option chosen
-            Display credit card by default
-                Display #credit-card div with credit card
-                Hide other info, vice versa with the others selected
-            'Select Payment Method' should not be selectable
         6: Form validation
             Name field can't be blank
             Email must be formated like a real email
@@ -202,5 +176,110 @@ pay.addEventListener('change', (e) => {
         cc.hidden = true;
         pp.hidden = true;
         bc.hidden = false;
+    }
+});
+//creating the name error message
+const nameError = document.createElement('div');
+nameError.innerHTML = `<p>Please enter your first and last name.</p>`
+name.insertAdjacentElement('beforebegin', nameError);
+//message is initially hidden
+nameError.hidden = true;
+//error text is red
+nameError.firstChild.style.cssText = "color: red;";
+//defining a regex for the the name input
+const nameRegex = new RegExp (/^[a-z]+\s[a-z]+$/, 'i')
+//defining regex for email
+const mailRegex = new RegExp (/^\w+@\w+\.[a-z]{3}$/, 'i')
+//creating email error message
+const mail = document.getElementById('mail')
+const mailError = document.createElement('div');
+mailError.innerHTML = `<p>Please enter a valid email address.</p>`
+mail.insertAdjacentElement('beforebegin', mailError);
+//message is initially hidden
+mailError.hidden = true;
+//error text is red
+mailError.firstChild.style.cssText = "color: red;";
+//Making a regex for the cc feild inputs
+const ccInput = document.getElementById('cc-num')
+const zipInput = document.getElementById('zip');
+const cvvInput = document.getElementById('cvv')
+const ccRegex = new RegExp (/^[\d]{13,16}$/);
+const zipRegex = new RegExp (/^[\d]{5}$/);
+const cvvRegex = new RegExp (/^[\d]{3}$/);
+const ccError = document.createElement('div');
+ccError.innerHTML = `<p>Please enter a valid credit card number.</p>`
+ccError.hidden = true;
+ccError.firstChild.style.cssText = "color: red;";
+ccInput.insertAdjacentElement('beforebegin', ccError);
+const zipError = document.createElement('div');
+zipError.innerHTML = `<p>Please enter a valid zip code.</p>`
+zipError.hidden = true;
+zipError.firstChild.style.cssText = "color: red;";
+zipInput.insertAdjacentElement('beforebegin', zipError);
+const cvvError = document.createElement('div');
+cvvError.innerHTML = `<p>Please enter your CVV.</p>`
+cvvError.hidden = true;
+cvvError.firstChild.style.cssText = "color: red;";
+cvvInput.insertAdjacentElement('beforebegin', cvvError);
+
+//Adding event listener to the submit button
+document.querySelector('button').addEventListener('click', (e) => {
+    if (nameRegex.test(name.value) === false ) {
+        //if the name field is incorrectly filled, error messages appear
+        name.setAttribute('style', 'border: 5px solid red');
+        nameError.hidden = false;
+        console.log('Name has been blocked.')
+        e.preventDefault();
+    } else if (nameRegex.test(name.value) === true) {
+        //if the input error is resolved, the error indicators are removed
+        nameError.hidden = true;
+        name.setAttribute('style', 'border: 2px solid rgb(111, 157, 220)')
+    }
+    if (mailRegex.test(mail.value) === false) {
+        //if the email field is entered incorrectly an error indicator is triggered
+        mail.setAttribute('style', 'border: 5px solid red');
+        mailError.hidden = false;
+        e.preventDefault();
+        console.log('Mail has been blocked.')
+    } else if (mailRegex.test(mail.value) === true) {
+        //if the input error is resolved, the error indicators are removed
+        mailError.hidden = true;
+        mail.setAttribute('style', 'border: 2px solid rgb(111, 157, 220)')
+    }
+    //Here, if the credit card is selected, I require cc information
+    if (cc.hidden === false ) {
+        if (ccRegex.test(ccInput.value) === false) {
+            //if the credit card is not entered correctly an error indicator is made visible
+            ccError.hidden = false;
+            ccInput.setAttribute('style', 'border: 5px solid red');
+            e.preventDefault();
+            console.log('Credit card number has been blocked.')
+        } else if (ccRegex.test(ccInput.value) === true) {
+            //if the input error is resolved, the error indicators are removed
+            ccError.hidden = true;
+            ccInput.setAttribute('style', 'border: 2px solid rgb(111, 157, 220)')
+        }
+        if (zipRegex.test(zipInput.value) === false) {
+            //If the zip code is entered incorrectly an error message is made visible
+            zipError.hidden = false;
+            zipInput.setAttribute('style', 'border: 5px solid red');
+            e.preventDefault();
+            console.log('Zip has been blocked.')
+        } else if (zipRegex.test(zipInput.value) === true) {
+            //if the input error is resolved, the error indicators are removed
+            zipError.hidden = true;
+            zipInput.setAttribute('style', 'border: 2px solid rgb(111, 157, 220)')
+        }
+        if (cvvRegex.test(cvvInput.value) === false) {
+            //if the cvv is not entered correctly an error message is displayed
+            cvvError.hidden = false;
+            cvvInput.setAttribute('style', 'border: 5px solid red');
+            e.preventDefault();
+            console.log('CVV has been blocked.')
+        } else if (cvvRegex.test(cvvInput.value) === true) {
+            //if the input error is resolved, the error indicators are removed
+            cvvError.hidden = true;
+            cvvInput.setAttribute('style', 'border: 2px solid rgb(111, 157, 220)')
+        }
     }
 });
