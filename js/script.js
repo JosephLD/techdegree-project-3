@@ -1,26 +1,6 @@
 /*
 Here is my javascript file for my 3rd project, I will be aiming for exceeds expectations
     To do: 
-        6: Form validation
-            Name field can't be blank
-            Email must be formated like a real email
-            At least one activity must be checked
-            If credit card is selected:
-                CC, Zip code, CVV are required before form can be submitted
-                    CC: number between 13 & 16 digits
-                    ZC: 5 digit number
-                    CVV: exactly 3 digits
-               Only validate if CC is selected
-            Form validation, error messages:
-                Name field
-                Email field
-                Activities checkboxes
-                If CC is selected:
-                    CC
-                    ZC
-                    CVV
-                Should not be visible by deafault
-        7: Works w/o JS
         8: Play around with CSS
             Color
             BG Color
@@ -206,6 +186,7 @@ const cvvInput = document.getElementById('cvv')
 const ccRegex = new RegExp (/^[\d]{13,16}$/);
 const zipRegex = new RegExp (/^[\d]{5}$/);
 const cvvRegex = new RegExp (/^[\d]{3}$/);
+//Making error messages for all the cc inputs
 const ccError = document.createElement('div');
 ccError.innerHTML = `<p>Please enter a valid credit card number.</p>`
 ccError.hidden = true;
@@ -221,6 +202,13 @@ cvvError.innerHTML = `<p>Please enter your CVV.</p>`
 cvvError.hidden = true;
 cvvError.firstChild.style.cssText = "color: red;";
 cvvInput.insertAdjacentElement('beforebegin', cvvError);
+//Createing an error indicator for the activities section
+const actError = document.createElement('div');
+actError.innerHTML = `<p>Please select at least one (1) activity:</p>`;
+const actLegend = document.querySelector('.activities legend');
+actLegend.insertAdjacentElement('afterend', actError);
+actError.firstElementChild.setAttribute('style', 'color: red; font-size: 1.5em');
+actError.hidden = true;
 
 //Adding event listener to the submit button
 document.querySelector('button').addEventListener('click', (e) => {
@@ -245,6 +233,18 @@ document.querySelector('button').addEventListener('click', (e) => {
         //if the input error is resolved, the error indicators are removed
         mailError.hidden = true;
         mail.setAttribute('style', 'border: 2px solid rgb(111, 157, 220)')
+    }
+    //Here I 'check' that at least one checkbox is checked
+    //Got this from a discussion on stackOverflow here: 
+    //https://stackoverflow.com/questions/11787665/making-sure-at-least-one-checkbox-is-checked
+    //Array.prototype.slice.call(actInputs).some(x => x.checked)
+    //So I use it to itarate through and make sure the checkboxes are checked
+    if ([].slice.call(actInputs).some(x => x.checked) === false) {
+        e.preventDefault();
+        console.log('Activity blocked');
+        actError.hidden = false;
+    } else if ([].slice.call(actInputs).some(x => x.checked) === true) {
+        actError.hidden = true;
     }
     //Here, if the credit card is selected, I require cc information
     if (cc.hidden === false ) {
