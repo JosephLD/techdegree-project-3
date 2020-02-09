@@ -187,21 +187,28 @@ const ccRegex = new RegExp (/^[\d]{13,16}$/);
 const zipRegex = new RegExp (/^[\d]{5}$/);
 const cvvRegex = new RegExp (/^[\d]{3}$/);
 //Making error messages for all the cc inputs
+const ccEmptyError = document.createElement('div');
+//Conditional error message if the cc input is empty
+    ccEmptyError.innerHTML = `<p>Please enter a credit card number.</p>`;
+    ccEmptyError.hidden = true;
+    ccEmptyError.firstChild.style.cssText = "color: red;";
+    ccInput.insertAdjacentElement('beforebegin', ccEmptyError);
 const ccError = document.createElement('div');
-ccError.innerHTML = `<p>Please enter a valid credit card number.</p>`
-ccError.hidden = true;
-ccError.firstChild.style.cssText = "color: red;";
-ccInput.insertAdjacentElement('beforebegin', ccError);
+//conditional error message if the input has more or less than 13-16 digits
+    ccError.innerHTML = `<p>Please enter a credit card number between 13 and 16 digits.</p>`
+    ccError.hidden = true;
+    ccError.firstChild.style.cssText = "color: red;";
+    ccInput.insertAdjacentElement('beforebegin', ccError);
 const zipError = document.createElement('div');
-zipError.innerHTML = `<p>Please enter a valid zip code.</p>`
-zipError.hidden = true;
-zipError.firstChild.style.cssText = "color: red;";
-zipInput.insertAdjacentElement('beforebegin', zipError);
+    zipError.innerHTML = `<p>Please enter a valid zip code.</p>`
+    zipError.hidden = true;
+    zipError.firstChild.style.cssText = "color: red;";
+    zipInput.insertAdjacentElement('beforebegin', zipError);
 const cvvError = document.createElement('div');
-cvvError.innerHTML = `<p>Please enter your CVV.</p>`
-cvvError.hidden = true;
-cvvError.firstChild.style.cssText = "color: red;";
-cvvInput.insertAdjacentElement('beforebegin', cvvError);
+    cvvError.innerHTML = `<p>Please enter your CVV.</p>`
+    cvvError.hidden = true;
+    cvvError.firstChild.style.cssText = "color: red;";
+    cvvInput.insertAdjacentElement('beforebegin', cvvError);
 //Createing an error indicator for the activities section
 const actError = document.createElement('div');
 actError.innerHTML = `<p>Please select at least one (1) activity:</p>`;
@@ -235,28 +242,33 @@ document.querySelector('button').addEventListener('click', (e) => {
         mail.setAttribute('style', 'border: 2px solid rgb(111, 157, 220)')
     }
     //Here I 'check' that at least one checkbox is checked
-    //Got this from a discussion on stackOverflow here: 
-    //https://stackoverflow.com/questions/11787665/making-sure-at-least-one-checkbox-is-checked
-    //Array.prototype.slice.call(actInputs).some(x => x.checked)
-    //So I use it to itarate through and make sure the checkboxes are checked
-    if ([].slice.call(actInputs).some(x => x.checked) === false) {
+    //I do this by checking the total cost, if it's 0 then no activity has been checked
+    if (totalCost === 0) {
         e.preventDefault();
         console.log('Activity blocked');
         actError.hidden = false;
-    } else if ([].slice.call(actInputs).some(x => x.checked) === true) {
+    } else {
         actError.hidden = true;
     }
     //Here, if the credit card is selected, I require cc information
     if (cc.hidden === false ) {
-        if (ccRegex.test(ccInput.value) === false) {
+        //Here I make a conditional validation for the credit card
+        if (ccInput.value === '') {
+            //If the credit card field has not been entered a message will ask the user to enter a number
+            ccEmptyError.hidden = false;
+            ccInput.setAttribute('style', 'border: 5px solid red');
+            e.preventDefault()
+        } else if (ccRegex.test(ccInput.value) === false) {
             //if the credit card is not entered correctly an error indicator is made visible
             ccError.hidden = false;
+            ccEmptyError.hidden = true;
             ccInput.setAttribute('style', 'border: 5px solid red');
             e.preventDefault();
             console.log('Credit card number has been blocked.')
         } else if (ccRegex.test(ccInput.value) === true) {
             //if the input error is resolved, the error indicators are removed
             ccError.hidden = true;
+            ccEmptyError.hidden = true;
             ccInput.setAttribute('style', 'border: 2px solid rgb(111, 157, 220)')
         }
         if (zipRegex.test(zipInput.value) === false) {
@@ -283,3 +295,18 @@ document.querySelector('button').addEventListener('click', (e) => {
         }
     }
 });
+//Here I make a real time error message testing for input in email input field
+const realError = document.createElement('span')
+    realError.textContent = 'Please enter your email address.'
+    mail.before(realError);
+    realError.setAttribute.cssText = 'color: rgb(223, 198, 115); font-size: 1.5 em;'
+    realError.hidden = true;
+mail.addEventListener('input', function (e) {
+    if (mailRegex.test(mail.value) === false) {
+    console.log('That was wrong')
+    realError.hidden = false;
+    } else if (mailRegex.test(mail.value)) {
+        console.log('That was correct!')
+        realError.hidden = true;
+    }
+})
