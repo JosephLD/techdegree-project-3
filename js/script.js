@@ -1,19 +1,5 @@
 /*
 Here is my javascript file for my 3rd project, I will be aiming for exceeds expectations
-    To do: 
-        8: Play around with CSS
-            Color
-            BG Color
-            font
-            transitions
-            animations
-            box shadows
-            text shadows
-        9: Test cross browser
-    *Extra*
-        // 1: Hide the 'Color' label and select menu until design is selected
-        2: Conditional error message
-        3: Real time error messages
 */
 //Here I will define any variables I need
 const name = document.getElementById('name');
@@ -33,7 +19,76 @@ const actInputs = act.querySelectorAll('input');
 const cost = document.createElement('div');
 //Here I make a variable to hold the total cost of activities
 let totalCost = 0;
+//Storing the payment in a constant for future use
+const pay = document.querySelector('#payment');
+const cc = document.getElementById('credit-card');
+const pp = document.getElementById('paypal');
+const bc = document.getElementById('bitcoin');
+//Here I have the regexs and other variables for form validation
+//Regexes:
+//name regex
+const nameRegex = new RegExp (/^[a-z]+\s[a-z]+$/, 'i')
+//email regex
+const mailRegex = new RegExp (/^\w+@\w+\.[a-z]{3}$/, 'i')
+//credit card regex
+const ccRegex = new RegExp (/^[\d]{13,16}$/);
+//zipcode regex
+const zipRegex = new RegExp (/^[\d]{5}$/);
+//cvv regex
+const cvvRegex = new RegExp (/^[\d]{3}$/);
 
+const nameError = document.createElement('div');
+    nameError.innerHTML = `<p>Please enter your first and last name.</p>`
+    name.insertAdjacentElement('beforebegin', nameError);
+    //message is initially hidden
+    nameError.hidden = true;
+    //error text is red
+    nameError.firstChild.style.cssText = "color: red;";
+
+//creating email error message
+const mail = document.getElementById('mail')
+const mailError = document.createElement('div');
+    mailError.innerHTML = `<p>Please enter a valid email address.</p>`
+    mail.insertAdjacentElement('beforebegin', mailError);
+    //message is initially hidden
+    mailError.hidden = true;
+    //error text is red
+    mailError.firstChild.style.cssText = "color: red;";
+//Making a regex for the cc feild inputs
+const ccInput = document.getElementById('cc-num')
+const zipInput = document.getElementById('zip');
+const cvvInput = document.getElementById('cvv')
+
+//Making error messages for all the cc inputs
+const ccEmptyError = document.createElement('div');
+//Conditional error message if the cc input is empty
+    ccEmptyError.innerHTML = `<p>Please enter a credit card number.</p>`;
+    ccEmptyError.hidden = true;
+    ccEmptyError.firstChild.style.cssText = "color: red;";
+    ccInput.insertAdjacentElement('beforebegin', ccEmptyError);
+const ccError = document.createElement('div');
+//conditional error message if the input has more or less than 13-16 digits
+    ccError.innerHTML = `<p>Please enter a credit card number between 13 and 16 digits.</p>`
+    ccError.hidden = true;
+    ccError.firstChild.style.cssText = "color: red;";
+    ccInput.insertAdjacentElement('beforebegin', ccError);
+const zipError = document.createElement('div');
+    zipError.innerHTML = `<p>Please enter a valid zip code.</p>`
+    zipError.hidden = true;
+    zipError.firstChild.style.cssText = "color: red;";
+    zipInput.insertAdjacentElement('beforebegin', zipError);
+const cvvError = document.createElement('div');
+    cvvError.innerHTML = `<p>Please enter your CVV.</p>`
+    cvvError.hidden = true;
+    cvvError.firstChild.style.cssText = "color: red;";
+    cvvInput.insertAdjacentElement('beforebegin', cvvError);
+//Createing an error indicator for the activities section
+const actError = document.createElement('div');
+actError.innerHTML = `<p>Please select at least one (1) activity:</p>`;
+const actLegend = document.querySelector('.activities legend');
+actLegend.insertAdjacentElement('afterend', actError);
+actError.firstElementChild.setAttribute('style', 'color: red; font-size: 1.5em');
+actError.hidden = true;
 
 //Here I use .focus() on the name input field, making it active from the beginning
 name.focus();
@@ -132,11 +187,7 @@ for (let i = 0; i < actInputs.length; i++) {
 
 
 //Working on payment area here
-//Storing the payment in a constant for future use
-const pay = document.querySelector('#payment');
-const cc = document.getElementById('credit-card');
-const pp = document.getElementById('paypal');
-const bc = document.getElementById('bitcoin');
+
 //Hiding the select payment option
 pay.firstElementChild.hidden = true;
 //Hiding the paypal and bit coin options
@@ -158,64 +209,6 @@ pay.addEventListener('change', (e) => {
         bc.hidden = false;
     }
 });
-//creating the name error message
-const nameError = document.createElement('div');
-nameError.innerHTML = `<p>Please enter your first and last name.</p>`
-name.insertAdjacentElement('beforebegin', nameError);
-//message is initially hidden
-nameError.hidden = true;
-//error text is red
-nameError.firstChild.style.cssText = "color: red;";
-//defining a regex for the the name input
-const nameRegex = new RegExp (/^[a-z]+\s[a-z]+$/, 'i')
-//defining regex for email
-const mailRegex = new RegExp (/^\w+@\w+\.[a-z]{3}$/, 'i')
-//creating email error message
-const mail = document.getElementById('mail')
-const mailError = document.createElement('div');
-mailError.innerHTML = `<p>Please enter a valid email address.</p>`
-mail.insertAdjacentElement('beforebegin', mailError);
-//message is initially hidden
-mailError.hidden = true;
-//error text is red
-mailError.firstChild.style.cssText = "color: red;";
-//Making a regex for the cc feild inputs
-const ccInput = document.getElementById('cc-num')
-const zipInput = document.getElementById('zip');
-const cvvInput = document.getElementById('cvv')
-const ccRegex = new RegExp (/^[\d]{13,16}$/);
-const zipRegex = new RegExp (/^[\d]{5}$/);
-const cvvRegex = new RegExp (/^[\d]{3}$/);
-//Making error messages for all the cc inputs
-const ccEmptyError = document.createElement('div');
-//Conditional error message if the cc input is empty
-    ccEmptyError.innerHTML = `<p>Please enter a credit card number.</p>`;
-    ccEmptyError.hidden = true;
-    ccEmptyError.firstChild.style.cssText = "color: red;";
-    ccInput.insertAdjacentElement('beforebegin', ccEmptyError);
-const ccError = document.createElement('div');
-//conditional error message if the input has more or less than 13-16 digits
-    ccError.innerHTML = `<p>Please enter a credit card number between 13 and 16 digits.</p>`
-    ccError.hidden = true;
-    ccError.firstChild.style.cssText = "color: red;";
-    ccInput.insertAdjacentElement('beforebegin', ccError);
-const zipError = document.createElement('div');
-    zipError.innerHTML = `<p>Please enter a valid zip code.</p>`
-    zipError.hidden = true;
-    zipError.firstChild.style.cssText = "color: red;";
-    zipInput.insertAdjacentElement('beforebegin', zipError);
-const cvvError = document.createElement('div');
-    cvvError.innerHTML = `<p>Please enter your CVV.</p>`
-    cvvError.hidden = true;
-    cvvError.firstChild.style.cssText = "color: red;";
-    cvvInput.insertAdjacentElement('beforebegin', cvvError);
-//Createing an error indicator for the activities section
-const actError = document.createElement('div');
-actError.innerHTML = `<p>Please select at least one (1) activity:</p>`;
-const actLegend = document.querySelector('.activities legend');
-actLegend.insertAdjacentElement('afterend', actError);
-actError.firstElementChild.setAttribute('style', 'color: red; font-size: 1.5em');
-actError.hidden = true;
 
 //Adding event listener to the submit button
 document.querySelector('button').addEventListener('click', (e) => {
@@ -309,4 +302,4 @@ mail.addEventListener('input', function (e) {
         console.log('That was correct!')
         realError.hidden = true;
     }
-})
+});
