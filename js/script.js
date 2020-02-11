@@ -210,7 +210,7 @@ pay.addEventListener('change', (e) => {
     }
 });
 
-//Adding event listener to the submit button
+//Adding event listener to the submit button for validation
 document.querySelector('button').addEventListener('click', (e) => {
     if (nameRegex.test(name.value) === false ) {
         //if the name field is incorrectly filled, error messages appear
